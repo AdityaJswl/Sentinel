@@ -1,0 +1,148 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Agent {
+  id              String   @id
+  name            String
+  secretEncrypted String
+  status          String   @default("active")
+  revision        Int      @default(1)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("agents")
+}
+
+model Delegation {
+  agentId                  String   @id
+  totalLimitPaise          Int
+  perTransactionLimitPaise Int
+  transactionCountLimit    Int
+  frequencyCount           Int
+  frequencyUnit            String
+  allowedCategoriesJson    String
+  allowedMerchantsJson     String
+  currency                 String   @default("INR")
+  expiresAt                DateTime
+
+  @@map("delegations")
+}
+
+model BudgetUsage {
+  agentId          String @id
+  spentPaise       Int    @default(0)
+  reservedPaise    Int    @default(0)
+  transactionCount Int    @default(0)
+
+  @@map("budgets_usage")
+}
+
+model Decision {
+  id           String   @id
+  requestId    String
+  agentId      String
+  agentName    String
+  merchant     String
+  amountPaise  Int
+  currency     String
+  verdict      String
+  reasonCode   String
+  reasonText   String
+  proposalJson String
+  checksJson   String
+  riskJson     String?
+  evidenceJson String
+  createdAt    DateTime @default(now())
+
+  @@index([agentId, createdAt])
+  @@map("decisions")
+}
+
+model Approval {
+  id          String   @id
+  decisionId  String   @unique
+  agentId     String
+  amountPaise Int
+  createdAt   DateTime @default(now())
+
+  @@index([agentId, createdAt])
+  @@map("approvals")
+}
+
+model Denial {
+  id         String   @id @default(cuid())
+  decisionId String   @unique
+  agentId    String
+  reasonCode String
+  createdAt  DateTime @default(now())
+
+  @@map("denials")
+}
+
+model Nonce {
+  requestId String   @id
+  agentId   String
+  createdAt DateTime @default(now())
+
+  @@map("nonces")
+}
+
+model AuthorizationArtifact {
+  approvalId  String    @id
+  decisionId  String    @unique
+  agentId     String
+  nonce       String    @unique
+  payloadJson String
+  amountPaise Int
+  expiresAt   DateTime
+  status      String    @default("issued")
+  consumedAt  DateTime?
+  createdAt   DateTime  @default(now())
+
+  @@index([agentId, status])
+  @@map("authorization_artifacts")
+}
+
+model Transaction {
+  id                String   @id
+  approvalId        String   @unique
+  agentId           String
+  amountPaise       Int
+  currency          String
+  merchant          String
+  status            String   @default("pending")
+  provider          String
+  providerOrderId   String?  @unique
+  providerPaymentId String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@map("transactions")
+}
+
+model WebhookReceipt {
+  eventId   String   @id
+  createdAt DateTime @default(now())
+
+  @@map("webhook_receipts")
+}
+
+model AuditEvent {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  actor       String
+  agentId     String?
+  eventType   String
+  verdict     String?
+  contextJson String
+
+  @@index([agentId, createdAt])
+  @@map("audit_events")
+}

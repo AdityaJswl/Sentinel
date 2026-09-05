@@ -1,0 +1,35 @@
+/*
+ * SENTINEL — the authorization ledger.
+ * Shared RazorCart identity: warm sand paper, Fraunces editorial headings,
+ * Manrope for precise operational information, and a restrained jade accent.
+ * Decisions alone use red and amber. All layout spacing follows a 4px scale.
+ */
+@import '@radix-ui/colors/sand.css';
+@import '@radix-ui/colors/jade.css';
+@import '@radix-ui/colors/red.css';
+@import '@radix-ui/colors/amber.css';
+
+:root {
+  --surface-canvas: var(--sand-2);
+  --surface-paper: var(--sand-1);
+  --surface-raised: var(--sand-3);
+  --ink-primary: var(--sand-12);
+  --ink-secondary: var(--sand-11);
+  --border-default: var(--sand-6);
+  --accent-solid: var(--jade-11);
+  --accent-soft: var(--jade-3);
+  --danger-solid: var(--red-11);
+  --danger-soft: var(--red-3);
+  --warning-solid: var(--amber-11);
+  --warning-soft: var(--amber-3);
+  --font-display: 'Fraunces Variable', Georgia, serif;
+  --font-body: 'Manrope Variable', Arial, sans-serif;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+}
