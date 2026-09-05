@@ -1,0 +1,117 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Product {
+  id                 String     @id @default(cuid())
+  source             String     @default("dummyjson")
+  remoteId           Int        @unique
+  name               String
+  slug               String     @unique
+  description        String
+  category           String
+  pricePaise         Int
+  discountPercentage Float?
+  rating             Float
+  stock              Int
+  brand               String?
+  sku                 String     @unique
+  imageUrl            String
+  imagesJson          String
+  tagsJson            String
+  attributesJson      String
+  createdAt           DateTime   @default(now())
+  updatedAt           DateTime   @updatedAt
+  cartItems           CartItem[]
+
+  @@index([category])
+  @@index([pricePaise])
+  @@index([stock])
+}
+
+model CartSession {
+  id        String     @id
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  items     CartItem[]
+}
+
+model CartItem {
+  id        String      @id @default(cuid())
+  cartId    String
+  productId String
+  quantity  Int         @default(1)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  cart      CartSession @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  product   Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([cartId, productId])
+  @@index([cartId])
+}
+
+model AgentDelegation {
+  id                       String                  @id @default(cuid())
+  agentId                  String                  @unique
+  name                     String
+  totalLimitPaise          Int
+  perTransactionLimitPaise Int
+  transactionCountLimit    Int
+  frequencyCount           Int
+  frequencyUnit            String
+  allowedCategoriesJson    String
+  allowedMerchantsJson     String
+  currency                 String                  @default("INR")
+  sentinelSecretEncrypted  String?
+  expiresAt                DateTime
+  createdAt                DateTime                @default(now())
+  authorizations           SentinelAuthorization[]
+
+  @@index([expiresAt])
+}
+
+model RequestNonce {
+  id        String   @id @default(cuid())
+  requestId String   @unique
+  createdAt DateTime @default(now())
+}
+
+model SentinelAuthorization {
+  id                  String          @id @default(cuid())
+  authorizationId     String          @unique
+  requestId           String
+  agentDelegationId   String?
+  agentId             String
+  proposalFingerprint String
+  amountPaise         Int
+  verdict             String
+  reasonCode          String
+  reasonMessage       String
+  proposalJson        String
+  checksJson          String
+  scenario            String          @default("normal")
+  createdAt           DateTime        @default(now())
+  agentDelegation     AgentDelegation? @relation(fields: [agentDelegationId], references: [id], onDelete: SetNull)
+
+  @@index([agentId, createdAt])
+  @@index([requestId])
+  @@index([verdict])
+}
+
+model AiAction {
+  id            String   @id @default(cuid())
+  actionType    String
+  inputSummary  String
+  outputSummary String
+  metadataJson  String?
+  createdAt     DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([actionType])
+}

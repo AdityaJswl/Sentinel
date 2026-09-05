@@ -1,0 +1,62 @@
+/*
+  RAZORCART DESIGN THESIS — “The modern buyer's ledger”
+
+  An editorial goods journal crossed with a precise transaction ledger: expansive
+  Fraunces headlines, compact Manrope utility text, warm sand paper, hairline rules,
+  and one deep jade signal color. Product photography creates the visual rhythm;
+  controls stay squared, tactile, and quiet. Spacing follows a strict 4px base.
+*/
+@import '@radix-ui/colors/sand.css';
+@import '@radix-ui/colors/jade.css';
+@import '@radix-ui/colors/red.css';
+@import '@radix-ui/colors/amber.css';
+
+:root {
+  --surface-canvas: var(--sand-2);
+  --surface-paper: var(--sand-1);
+  --surface-raised: var(--sand-3);
+  --surface-strong: var(--sand-12);
+  --ink-primary: var(--sand-12);
+  --ink-secondary: var(--sand-11);
+  --ink-muted: var(--sand-10);
+  --ink-inverse: var(--sand-1);
+  --border-default: var(--sand-6);
+  --border-strong: var(--sand-8);
+  --accent-soft: var(--jade-3);
+  --accent-muted: var(--jade-7);
+  --accent-solid: var(--jade-11);
+  --accent-pressed: var(--jade-12);
+  --danger-soft: var(--red-3);
+  --danger-solid: var(--red-11);
+  --warning-soft: var(--amber-3);
+  --warning-solid: var(--amber-11);
+
+  --font-display: 'Fraunces Variable', Georgia, serif;
+  --font-body: 'Manrope Variable', Arial, sans-serif;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.5rem;
+  --text-2xl: clamp(2rem, 4vw, 3.5rem);
+  --text-display: clamp(3.5rem, 9vw, 8.5rem);
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --content-max: 90rem;
+}
